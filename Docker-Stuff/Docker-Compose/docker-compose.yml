@@ -1,0 +1,39 @@
+version: "3.8"
+services:
+  frontend:
+    build: ./Frontend/vite-compose
+    ports:
+      - "3002:80"
+    depends_on:
+      - backend
+    networks:
+      - my-custom-network
+  backend:
+    build: ./Backend
+    ports:
+      - "3001:3030"
+    environment:
+      DB_HOST: database
+      DB_USER: postgres
+      DB_PASSWORD: password
+      DB_NAME: postgres
+    depends_on:
+      - database
+    networks:
+      - my-custom-network
+  database:
+    image: postgres:16-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - my-custom-network
+volumes:
+  pgdata:
+networks:
+  my-custom-network:
+    driver: bridge
