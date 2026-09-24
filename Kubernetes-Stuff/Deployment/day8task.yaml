@@ -1,0 +1,45 @@
+# apiVersion: apps/v1 # only v1 was written which was wrong it 
+# kind:  Deployment
+# metadata:
+#   name: nginx-deploy
+#   labels:
+#     env: demo
+# spec:
+#   template:
+#     metadata:
+#       labels:
+#         env: demo
+#       name: nginx
+#     spec:
+#       containers:
+#       - image: nginx
+#         name: nginx
+#         ports:
+#         - containerPort: 80
+#   replicas: 3
+#   selector:
+#     matchLabels:
+#       env: demo
+
+apiVersion: apps/v1
+kind:  Deployment
+metadata:
+  name: nginx-deploy
+  labels:
+    env: dev
+spec:
+  template:
+    metadata:
+      labels:
+        env: dev #here demo was written which mismatched with dev in selector whih caused the error it can also be solved by changing dev to demo in selectors 
+      name: nginx
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        ports:
+        - containerPort: 80
+  replicas: 3
+  selector:
+    matchLabels:
+      env: dev
